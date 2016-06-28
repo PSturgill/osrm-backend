@@ -18,6 +18,11 @@ highway_priorities = { ["motorway"] = 0, ["motorway_link"] = 10, ["trunk"] = 2, 
 default_highway_priority = 14;
 
 motorway_types = { ["motorway"] = true, ["motorway_link"] = true, ["trunk"] = true, ["trunk_link"] = true }
+
+road_types = { ["motorway"] = true, ["motorway_link"] = true, ["trunk"] = true, ["trunk_link"] = true, ["primary"] = true, ["primary_link"] = true,
+               ["secondary"] = true, ["secondary_link"] = true, ["tertiary"] = true, ["tertiary_link"] = true, ["unclassified"] = true, ["residential"] = true,
+               ["living_street"] = true }
+
 link_types = { ["motorway_link"] = true, ["trunk_link"] = true, ["primary_link"] = true, ["secondary_link"] = true, ["tertiary_link"] = true }
 
 -- A list of suffixes to suppress in name change instructions
@@ -283,9 +288,12 @@ local function setClassification (highway, result)
     end
     if highway_priorities[highway] ~= nil then
         result.road_classification.priority = highway_priorities[highway]
-        result.road_classification.may_be_ignored = false;
     else
         result.road_classification.priority = default_highway_priority
+    end
+    if road_types[highway] then
+        result.road_classification.may_be_ignored = false;
+    else
         result.road_classification.may_be_ignored = true;
     end
 end
