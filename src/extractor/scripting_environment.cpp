@@ -131,6 +131,21 @@ void ScriptingEnvironment::InitContext(ScriptingEnvironment::Context &context)
              .def_readwrite("traffic_lights", &ExtractionNode::traffic_lights)
              .def_readwrite("barrier", &ExtractionNode::barrier),
 
+        // road classification to be set in profile
+        luabind::class_<guidance::RoadClassification>("RoadClassification")
+             .property("motorway_class",
+                  &guidance::RoadClassification::isMotorwayClass,
+                  &guidance::RoadClassification::setMotorwayFlag)
+             .property("link_class",
+                  &guidance::RoadClassification::isLinkClass,
+                  &guidance::RoadClassification::setLinkClass)
+             .property("may_be_ignored",
+                  &guidance::RoadClassification::isLowPriorityRoadClass,
+                  &guidance::RoadClassification::setLowPriorityFlag)
+             .property("priority",
+                  &guidance::RoadClassification::getPriority,
+                  &guidance::RoadClassification::setPriority),
+
          luabind::class_<ExtractionWay>("ResultWay")
              // .def(luabind::constructor<>())
              .def_readwrite("forward_speed", &ExtractionWay::forward_speed)
@@ -163,19 +178,6 @@ void ScriptingEnvironment::InitContext(ScriptingEnvironment::Context &context)
              .def("get_value_by_key", &get_value_by_key<osmium::Way>)
              .def("id", &osmium::Way::id)
              .def("get_nodes", get_nodes_for_way, luabind::return_stl_iterator),
-         luabind::class_<guidance::RoadClassification>("RoadClassification")
-             .def("motorway_class",
-                  &guidance::RoadClassification::isMotorwayClass,
-                  &guidance::RoadClassification::setMotorwayFlag)
-             .def("link_class",
-                  &guidance::RoadClassification::isLinkClass,
-                  &guidance::RoadClassification::setLinkClass)
-             .def("may_be_ignored",
-                  &guidance::RoadClassification::isLowPriorityRoadClass,
-                  &guidance::RoadClassification::setLowPriorityFlag)
-             .def("priority",
-                  &guidance::RoadClassification::getPriority,
-                  &guidance::RoadClassification::setPriority),
          luabind::class_<InternalExtractorEdge>("EdgeSource")
              .def_readonly("source_coordinate", &InternalExtractorEdge::source_coordinate)
              .def_readwrite("weight_data", &InternalExtractorEdge::weight_data),

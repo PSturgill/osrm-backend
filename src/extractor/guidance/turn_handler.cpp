@@ -101,9 +101,6 @@ Intersection TurnHandler::handleThreeWayTurn(const EdgeID via_edge, Intersection
             (!second_classification.isLowPriorityRoadClass() &&
              first_classification.isLowPriorityRoadClass());
 
-        std::cout << "Priorities: " << first_classification.getPriority() << " "
-                  << second_classification.getPriority() << std::endl;
-
         if (other_is_obvious_by_road_flass)
             return false;
 

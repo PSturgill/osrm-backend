@@ -274,7 +274,7 @@ function node_function (node, result)
   end
 end
 
-local function setClassification( highway, result )
+local function setClassification (highway, result)
     if motorway_types[highway] then
         result.road_classification.motorway_class = true;
     end
@@ -288,7 +288,6 @@ local function setClassification( highway, result )
         result.road_classification.priority = default_highway_priority
         result.road_classification.may_be_ignored = true;
     end
-    return result
 end
 
 function way_function (way, result)
@@ -421,7 +420,7 @@ function way_function (way, result)
   end
 
   -- set the road classification based on guidance globals configuration
-  result = setClassification(highway,result)
+  setClassification(highway,result)
 
   -- parse the remaining tags
   local name = way:get_value_by_key("name")

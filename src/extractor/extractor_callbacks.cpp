@@ -142,6 +142,7 @@ void ExtractorCallbacks::ProcessWay(const osmium::Way &input_way, const Extracti
 
     // FIXME this need to be moved into the profiles
     const guidance::RoadClassification road_classification = parsed_way.road_classification;
+    std::cout << "Classification: " << road_classification.toString() << std::endl;
 
     const auto laneStringToDescription = [](std::string lane_string) -> TurnLaneDescription {
         if (lane_string.empty())

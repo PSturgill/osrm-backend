@@ -31,10 +31,7 @@ class RoadClassification
 
   public:
     // default construction
-    RoadClassification()
-        : motorway_class(false), link_class(false), may_be_ignored(false), priority(0)
-    {
-    }
+    RoadClassification() : motorway_class(0), link_class(0), may_be_ignored(1), priority(31) {}
 
     RoadClassification(bool motorway_class, bool link_class, bool may_be_ignored, unsigned priority)
         : motorway_class(motorway_class), link_class(link_class), may_be_ignored(may_be_ignored),
@@ -42,15 +39,15 @@ class RoadClassification
     {
     }
 
-    inline bool isMotorwayClass() const { return motorway_class && !link_class; }
+    inline bool isMotorwayClass() const { return (0 != motorway_class) && (0 == link_class); }
     inline void setMotorwayFlag(const bool new_value) { motorway_class = new_value; }
 
-    inline bool isRampClass() const { return motorway_class && link_class; }
+    inline bool isRampClass() const { return (0 != motorway_class) && (0 != link_class); }
 
-    inline bool isLinkClass() const { return link_class; }
+    inline bool isLinkClass() const { return (0 != link_class); }
     inline void setLinkClass(const bool new_value) { link_class = new_value; }
 
-    inline bool isLowPriorityRoadClass() const { return may_be_ignored; }
+    inline bool isLowPriorityRoadClass() const { return (0 != may_be_ignored); }
     inline void setLowPriorityFlag(const bool new_value) { may_be_ignored = new_value; }
 
     inline std::uint32_t getPriority() const { return priority; }
@@ -65,14 +62,15 @@ class RoadClassification
     inline std::string toString() const
     {
         return std::string() + (motorway_class ? "motorway" : "normal") +
-               (link_class ? "_link" : "") + (may_be_ignored ? " ignorable" : " important") +
+               (link_class ? "_link" : "") + (may_be_ignored ? " ignorable " : " important ") +
                std::to_string(priority);
     }
 };
 
 inline bool canBeSeenAsFork(const RoadClassification first, const RoadClassification second)
 {
-    return std::abs(static_cast<int>(first.getPriority()) - static_cast<int>(second.getPriority())) <= 1;
+    return std::abs(static_cast<int>(first.getPriority()) -
+                    static_cast<int>(second.getPriority())) <= 1;
 }
 } // namespace guidance
 } // namespace extractor
