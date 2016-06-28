@@ -1,6 +1,6 @@
-#include "extractor/guidance/classification_data.hpp"
 #include "extractor/guidance/constants.hpp"
 #include "extractor/guidance/motorway_handler.hpp"
+#include "extractor/guidance/road_classification.hpp"
 #include "extractor/guidance/toolkit.hpp"
 
 #include "util/guidance/toolkit.hpp"
@@ -25,18 +25,17 @@ namespace
 
 inline bool isMotorwayClass(EdgeID eid, const util::NodeBasedDynamicGraph &node_based_graph)
 {
-    return node_based_graph.GetEdgeData(eid)
-        .road_classification.road_classification.isMotorwayClass();
+    return node_based_graph.GetEdgeData(eid).road_classification.isMotorwayClass();
 }
 inline RoadClassification roadClass(const ConnectedRoad &road,
                                     const util::NodeBasedDynamicGraph &graph)
 {
-    return graph.GetEdgeData(road.turn.eid).road_classification.road_classification;
+    return graph.GetEdgeData(road.turn.eid).road_classification;
 }
 
 inline bool isRampClass(EdgeID eid, const util::NodeBasedDynamicGraph &node_based_graph)
 {
-    return node_based_graph.GetEdgeData(eid).road_classification.road_classification.isRampClass();
+    return node_based_graph.GetEdgeData(eid).road_classification.isRampClass();
 }
 
 } // namespace
@@ -496,7 +495,7 @@ Intersection MotorwayHandler::fallback(Intersection intersection) const
 
         util::SimpleLogger().Write(logDEBUG)
             << "road: " << toString(road) << " Name: " << out_data.name_id
-            << " Road Class: " << out_data.road_classification.road_classification.toString();
+            << " Road Class: " << out_data.road_classification.toString();
 
         if (!road.entry_allowed)
             continue;

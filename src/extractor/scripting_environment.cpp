@@ -144,6 +144,7 @@ void ScriptingEnvironment::InitContext(ScriptingEnvironment::Context &context)
              .def_readwrite("duration", &ExtractionWay::duration)
              .def_readwrite("turn_lanes_forward", &ExtractionWay::turn_lanes_forward)
              .def_readwrite("turn_lanes_backward", &ExtractionWay::turn_lanes_backward)
+             .def_readwrite("road_classification", &ExtractionWay::road_classification)
              .property(
                  "forward_mode", &ExtractionWay::get_forward_mode, &ExtractionWay::set_forward_mode)
              .property("backward_mode",
@@ -162,6 +163,19 @@ void ScriptingEnvironment::InitContext(ScriptingEnvironment::Context &context)
              .def("get_value_by_key", &get_value_by_key<osmium::Way>)
              .def("id", &osmium::Way::id)
              .def("get_nodes", get_nodes_for_way, luabind::return_stl_iterator),
+         luabind::class_<guidance::RoadClassification>("RoadClassification")
+             .def("motorway_class",
+                  &guidance::RoadClassification::isMotorwayClass,
+                  &guidance::RoadClassification::setMotorwayFlag)
+             .def("link_class",
+                  &guidance::RoadClassification::isLinkClass,
+                  &guidance::RoadClassification::setLinkClass)
+             .def("may_be_ignored",
+                  &guidance::RoadClassification::isLowPriorityRoadClass,
+                  &guidance::RoadClassification::setLowPriorityFlag)
+             .def("priority",
+                  &guidance::RoadClassification::getPriority,
+                  &guidance::RoadClassification::setPriority),
          luabind::class_<InternalExtractorEdge>("EdgeSource")
              .def_readonly("source_coordinate", &InternalExtractorEdge::source_coordinate)
              .def_readwrite("weight_data", &InternalExtractorEdge::weight_data),

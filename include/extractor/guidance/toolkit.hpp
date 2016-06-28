@@ -12,7 +12,6 @@
 #include "extractor/query_node.hpp"
 #include "extractor/suffix_table.hpp"
 
-#include "extractor/guidance/classification_data.hpp"
 #include "extractor/guidance/discrete_angle.hpp"
 #include "extractor/guidance/intersection.hpp"
 #include "extractor/guidance/turn_instruction.hpp"
